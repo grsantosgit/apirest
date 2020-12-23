@@ -1,23 +1,22 @@
 package com.spring.apirest.service.impl;
 
-import java.lang.annotation.Repeatable;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.spring.apirest.entities.ClientEntity;
 import com.spring.apirest.error.ResourceNotFounderException;
-import com.spring.apirest.model.Cliente;
-import com.spring.apirest.repository.ClienteRepository;
-import com.spring.apirest.service.ClienteService;
+import com.spring.apirest.repository.ClientRepository;
+import com.spring.apirest.service.ClientService;
 
-public class ClientServiceImpl implements ClienteService{
+public class ClientServiceImpl implements ClientService{
 	
-	private ClienteRepository repository;
+	private ClientRepository repository;
 
 	@Override
-	public Page<Cliente> getClients(Pageable pageable) {
-		Page<Cliente> clientList = repository.findAll(pageable);
+	public Page<ClientEntity> getClients(Pageable pageable) {
+		Page<ClientEntity> clientList = repository.findAll(pageable);
 		if(clientList != null || clientList.getSize() > 0) {
 			return clientList;
 		}else {
@@ -26,8 +25,8 @@ public class ClientServiceImpl implements ClienteService{
 	}
 
 	@Override
-	public List<Cliente> findClienteByNomeIsNull() {
-		List<Cliente> clientsNameByNull = repository.findClienteByNomeIsNull();
+	public List<ClientEntity> findClienteByNomeIsNull() {
+		List<ClientEntity> clientsNameByNull = repository.findClienteByNomeIsNull();
 		if(!(clientsNameByNull.size() > 0)) {
 			throw new ResourceNotFounderException("Clientes not found");
 		}else {
@@ -36,8 +35,8 @@ public class ClientServiceImpl implements ClienteService{
 	}
 
 	@Override
-	public Cliente findClientById(Long id) {
-		Cliente client = repository.findClienteById(id);
+	public ClientEntity findClientById(Long id) {
+		ClientEntity client = repository.findClienteById(id);
 		if(client == null) {
 			throw new ResourceNotFounderException("Cliente not found. id: " + id);
 		}
@@ -45,13 +44,13 @@ public class ClientServiceImpl implements ClienteService{
 	}
 
 	@Override
-	public void saveClient(Cliente cliente) {
+	public void saveClient(ClientEntity cliente) {
 		repository.save(cliente);
 	}
 
 	@Override
-	public Cliente update(Long id, Cliente cliente) {
-		Cliente clienteFounder = repository.findClienteById(id);
+	public ClientEntity update(Long id, ClientEntity cliente) {
+		ClientEntity clienteFounder = repository.findClienteById(id);
 		clienteFounder.setNome(cliente.getNome());
 		clienteFounder.setIdade(cliente.getIdade());
 		clienteFounder.setCidade(cliente.getCidade());
@@ -60,7 +59,7 @@ public class ClientServiceImpl implements ClienteService{
 
 	@Override
 	public void delete(Long id) {
-		Cliente cliente = repository.findClienteById(id);
+		ClientEntity cliente = repository.findClienteById(id);
 		
 		if(cliente != null) {
 			repository.delete(cliente);
@@ -71,7 +70,7 @@ public class ClientServiceImpl implements ClienteService{
 
 	@Override
 	public void deleteALL() {
-		List<Cliente> clientsWithNameNull = repository.findClienteByNomeIsNull();
+		List<ClientEntity> clientsWithNameNull = repository.findClienteByNomeIsNull();
 
 		if(clientsWithNameNull != null && clientsWithNameNull.size() > 0) {
 			repository.deleteAll(clientsWithNameNull);

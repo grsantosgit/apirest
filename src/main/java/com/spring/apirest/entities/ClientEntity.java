@@ -1,9 +1,11 @@
-package com.spring.apirest.model;
+package com.spring.apirest.entities;
 
 import javax.persistence.Entity;
 
+import com.spring.apirest.model.AbstracEntity;
+
 @Entity
-public class Cliente extends AbstracEntity {
+public class ClientEntity extends AbstracEntity {
 
 	/**
 	 * guilherme rosa dos santos

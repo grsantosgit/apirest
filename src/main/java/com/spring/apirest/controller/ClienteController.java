@@ -16,23 +16,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.apirest.model.Cliente;
-import com.spring.apirest.service.ClienteService;
+import com.spring.apirest.entities.ClientEntity;
+import com.spring.apirest.service.ClientService;
 
 @RestController
 @RequestMapping(value = "v2/")
 public class ClienteController {
 
 	@Autowired
-	private ClienteService service;
+	private ClientService service;
 
 	@GetMapping(path = "protected/clients")
-	public ResponseEntity<Page<Cliente>> getClients(Pageable pageable) {
+	public ResponseEntity<Page<ClientEntity>> getClients(Pageable pageable) {
 		return ResponseEntity.ok().body(service.getClients(pageable));
 	}
 
 	@GetMapping(path = "protected/clients/withErrors")
-	public ResponseEntity<List<Cliente>> getCLietesIsNULL() {
+	public ResponseEntity<List<ClientEntity>> getCLietesIsNULL() {
 		return ResponseEntity.ok( service.findClienteByNomeIsNull());
 	}
 
@@ -42,13 +42,13 @@ public class ClienteController {
 	}
 
 	@PostMapping(path = "admin/clients")
-	public ResponseEntity<?> saveCliente(@RequestBody Cliente cliente) {
+	public ResponseEntity<?> saveCliente(@RequestBody ClientEntity cliente) {
 		service.saveClient(cliente);
 		return new ResponseEntity<>(cliente, HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "admin/clients/{id}")
-	public ResponseEntity<?> updateCliente(@PathVariable("id") Long id, @RequestBody Cliente cliente) {
+	public ResponseEntity<?> updateCliente(@PathVariable("id") Long id, @RequestBody ClientEntity cliente) {
 		return ResponseEntity.ok(service.update(id, cliente));
 	}
 
